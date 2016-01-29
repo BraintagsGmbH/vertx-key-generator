@@ -64,17 +64,19 @@ public abstract class AbstractKeyGenerator implements IKeyGenerator {
    * io.vertx.core.Vertx)
    */
   @Override
-  public final void init(Settings settings, Vertx vertx) throws Exception {
+  public final void init(Settings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception {
     this.vertx = vertx;
-    init(settings);
+    init(settings, handler);
   }
 
   /**
    * Internal init after the instance of vertx was stored
    * 
    * @param settings
+   * @param handler
+   *          the handler to be informed
    */
-  protected abstract void init(Settings settings) throws Exception;
+  protected abstract void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception;
 
   /**
    * @return the vertx

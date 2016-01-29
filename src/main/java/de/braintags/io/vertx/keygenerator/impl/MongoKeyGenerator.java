@@ -12,16 +12,28 @@
  */
 package de.braintags.io.vertx.keygenerator.impl;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import de.braintags.io.vertx.keygenerator.Settings;
+import de.braintags.io.vertx.util.exception.InitException;
+import de.flapdoodle.embed.mongo.MongodExecutable;
+import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.runtime.Network;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.MongoClient;
 
 /**
- * This generator generates keys and stores the current counter inside a local file
+ * This generator uses MongoDb to generate and store keys
  * 
  * @author Michael Remme
  * 
@@ -29,11 +41,48 @@ import io.vertx.core.json.JsonObject;
 public class MongoKeyGenerator extends AbstractKeyGenerator {
   private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
       .getLogger(MongoKeyGenerator.class);
-  public static final String NAME = "FileKeyGenerator";
+  public static final String NAME = "mongoKeyGenerator";
 
-  private static final String FILENAME = "pojomapperKeys";
-  private JsonObject keyMap;
-  private String fileDestination;
+  /**
+   * The name of the property to define, wether a local instance of Mongo shall be started. Usable only for debugging
+   * and testing purpose
+   */
+  public static final String START_MONGO_LOCAL_PROP = "startMongoLocal";
+
+  /**
+   * If START_MONGO_LOCAL_PROP is set to true, then this defines the local port to be used. Default is 27018
+   */
+  public static final String LOCAL_PORT_PROP = "localPort";
+
+  /**
+   * The property, which defines the connection string. Something like "mongodb://localhost:27017"
+   */
+  public static final String CONNECTION_STRING_PROPERTY = "connection_string";
+
+  /**
+   * The default connection to be used, if CONNECTION_STRING_PROPERTY is undefined
+   */
+  public static final String DEFAULT_CONNECTION = "mongodb://localhost:27017";
+
+  /**
+   * The name of the property in the config, which defines the database name
+   */
+  public static final String DBNAME_PROP = "db_name";
+
+  private static final String DEFAULT_DB_NAME = "KeygeneratoDb";
+
+  /**
+   * The name of the property, which defines wether the MongoClient to be used is shared or not
+   */
+  public static final String SHARED_PROP = "shared";
+
+  private static MongodExecutable exe;
+  private boolean startMongoLocal = false;
+  private int localPort = 27018;
+  private String connectionString;
+  private boolean shared = false;
+  private String dbName = DEFAULT_DB_NAME;
+  private MongoClient mongoClient;
 
   /**
    * @param name
@@ -49,7 +98,71 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(Settings settings) throws Exception {
+  public void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception {
+    try {
+      Properties props = settings.getGeneratorProperties();
+      shared = Boolean.valueOf(props.getProperty(SHARED_PROP, "false"));
+      startMongoLocal = Boolean.valueOf(props.getProperty(START_MONGO_LOCAL_PROP, "false"));
+      localPort = Integer.parseInt(props.getProperty(LOCAL_PORT_PROP, String.valueOf(localPort)));
+
+      if (startMongoLocal) {
+        connectionString = "mongodb://localhost:" + localPort;
+      } else {
+        connectionString = props.getProperty(CONNECTION_STRING_PROPERTY, DEFAULT_CONNECTION);
+      }
+      dbName = props.getProperty(DBNAME_PROP, DEFAULT_DB_NAME);
+      startMongoExe(startMongoLocal, localPort);
+      initMongoClient(handler);
+    } catch (Exception e) {
+      handler.handle(Future.failedFuture(e));
+    }
+  }
+
+  private void initMongoClient(Handler<AsyncResult<Void>> handler) {
+    try {
+      Vertx vertx = getVertx();
+      JsonObject config = getConfig();
+      LOGGER.info("STARTING MONGO CLIENT with config " + config);
+      mongoClient = shared ? MongoClient.createShared(vertx, config) : MongoClient.createNonShared(vertx, config);
+      if (mongoClient == null) {
+        handler.handle(Future.failedFuture(new InitException("No MongoClient created")));
+      } else {
+        mongoClient.getCollections(resultHandler -> {
+          if (resultHandler.failed()) {
+            LOGGER.error("", resultHandler.cause());
+            handler.handle(Future.failedFuture(resultHandler.cause()));
+          } else {
+            LOGGER.info(String.format("found %d collections", resultHandler.result().size()));
+            handler.handle(Future.succeededFuture());
+          }
+        });
+      }
+    } catch (Exception e) {
+      handler.handle(Future.failedFuture(new InitException(e)));
+    }
+  }
+
+  private JsonObject getConfig() {
+    JsonObject config = new JsonObject();
+    config.put("connection_string", this.connectionString);
+    config.put(DBNAME_PROP, this.dbName);
+    return config;
+  }
+
+  private boolean startMongoExe(boolean startMongoLocal, int localPort) {
+    if (startMongoLocal) {
+      LOGGER.info("STARTING MONGO EXE");
+      try {
+        IMongodConfig config = new MongodConfigBuilder().version(Version.Main.PRODUCTION)
+            .net(new Net(localPort, Network.localhostIsIPv6())).build();
+        exe = MongodStarter.getDefaultInstance().prepare(config);
+        exe.start();
+        return true;
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return false;
   }
 
   /*
@@ -69,6 +182,9 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    */
   @Override
   public void shutdown(Handler<AsyncResult<Void>> handler) {
+    if (exe != null) {
+      exe.stop();
+    }
     super.shutdown(handler);
   }
 
@@ -79,7 +195,13 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    */
   @Override
   public Properties createDefaultProperties() {
-    return new Properties();
+    Properties props = new Properties();
+    props.put(CONNECTION_STRING_PROPERTY, DEFAULT_CONNECTION);
+    props.put(START_MONGO_LOCAL_PROP, "false");
+    props.put(LOCAL_PORT_PROP, "27018");
+    props.put(SHARED_PROP, "false");
+    props.put(DBNAME_PROP, DEFAULT_DB_NAME);
+    return props;
   }
 
 }

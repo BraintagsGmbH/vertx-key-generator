@@ -22,6 +22,7 @@
 		<doc.skip>true</doc.skip>
 		<maven.test.skip>true</maven.test.skip>
 		<source.skip>true</source.skip>
+		<MONGO_VERSION>3.0.0</MONGO_VERSION>
 	</properties>
 
 
@@ -41,6 +42,27 @@
 			<version>1.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 			<classifier>tests</classifier>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-mongo-embedded-db</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-mongo-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-mongo-service</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-mongo-service</artifactId>
+			<scope>test</scope>
+			<classifier>tests</classifier>
+			<version>${MONGO_VERSION}</version>
 		</dependency>
 	</dependencies>
 </project>

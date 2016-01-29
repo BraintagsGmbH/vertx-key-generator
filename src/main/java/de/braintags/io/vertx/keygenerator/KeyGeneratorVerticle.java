@@ -74,9 +74,14 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
     Objects.requireNonNull(settings.getKeyGeneratorClass(), "The keygenerator class must be set in the settings");
     try {
       keyGenerator = settings.getKeyGeneratorClass().newInstance();
-      keyGenerator.init(settings, vertx);
-      vertx.eventBus().consumer(SERVICE_NAME, message -> keyGenerator.generateKey(message));
-      startFuture.complete();
+      keyGenerator.init(settings, vertx, result -> {
+        if (result.failed()) {
+          startFuture.fail(result.cause());
+        } else {
+          vertx.eventBus().consumer(SERVICE_NAME, message -> keyGenerator.generateKey(message));
+          startFuture.complete();
+        }
+      });
     } catch (Exception e) {
       startFuture.fail(e);
     }

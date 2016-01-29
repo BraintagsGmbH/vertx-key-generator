@@ -34,8 +34,10 @@ public interface IKeyGenerator {
    *          the settings to be used
    * @param vertx
    *          the current instance of Vertx
+   * @param handler
+   *          the handler to be informed
    */
-  void init(Settings settings, Vertx vertx) throws Exception;
+  void init(Settings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception;
 
   /**
    * This method is requested, when the {@link Settings} are created new

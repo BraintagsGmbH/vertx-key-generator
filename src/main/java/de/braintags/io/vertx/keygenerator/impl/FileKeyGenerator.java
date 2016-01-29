@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import de.braintags.io.vertx.keygenerator.Settings;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
@@ -58,13 +59,18 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(Settings settings) throws Exception {
-    destinationDir = settings.getGeneratorProperties().getProperty(DESTINATION_DIRECTORY_PROP,
-        Settings.LOCAL_USER_DIRECTORY);
-    fileDestination = destinationDir + (destinationDir.endsWith("/") ? "" : "/") + FILENAME;
-    fileSystem = getVertx().fileSystem();
-    LOGGER.info("Storing file into " + fileDestination);
-    loadKeyMap();
+  public void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception {
+    try {
+      destinationDir = settings.getGeneratorProperties().getProperty(DESTINATION_DIRECTORY_PROP,
+          Settings.LOCAL_USER_DIRECTORY);
+      fileDestination = destinationDir + (destinationDir.endsWith("/") ? "" : "/") + FILENAME;
+      fileSystem = getVertx().fileSystem();
+      LOGGER.info("Storing file into " + fileDestination);
+      loadKeyMap();
+      handler.handle(Future.succeededFuture());
+    } catch (Exception e) {
+      handler.handle(Future.failedFuture(e));
+    }
   }
 
   /*
