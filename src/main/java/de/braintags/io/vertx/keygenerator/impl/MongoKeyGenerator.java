@@ -118,6 +118,10 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     }
   }
 
+  private void initCounterCollection(MongoClient client) {
+
+  }
+
   private void initMongoClient(Handler<AsyncResult<Void>> handler) {
     try {
       Vertx vertx = getVertx();
