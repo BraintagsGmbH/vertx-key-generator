@@ -56,7 +56,8 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
   }
 
   protected Long checkReply(TestContext context, Message<Object> reply, long expect) {
-    context.assertTrue(reply.body().getClass() == Long.class, "reply is not a long: " + reply.body().getClass());
+    context.assertTrue(reply.body().getClass() == Long.class,
+        "reply is not a long: " + reply.body().getClass() + " | " + reply.body().toString());
     if (expect >= 0) {
       context.assertEquals(expect, reply.body(), "not the expected value");
     }

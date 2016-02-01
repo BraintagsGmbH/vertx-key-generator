@@ -72,6 +72,26 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
   private static final String DEFAULT_DB_NAME = "KeygeneratoDb";
 
   /**
+   * The name of the property in the config, which defines the collection to be used
+   */
+  public static final String COLLECTTION_PROP = "collection";
+
+  /**
+   * The default name of the collection, which is used to store sequence informations
+   */
+  public static final String DEFAULT_COLLECTION_NAME = "SequenceCollection";
+
+  /**
+   * The name of the property in the config, which defines the reference name, which is used to identify the record to
+   * be used. The system uses on recod to generate and update sequences. This record is identified by its reference.
+   * Therefor the system genreates a field "reference", which it uses to search the record
+   */
+  public static final String REFERENCE_NAME_PROP = "referenceName";
+
+  private static final String DEFAULT_REFERENCE_NAME = "reference";
+  private static final String REFERENCE_FIELD_NAME = "reference";
+
+  /**
    * The name of the property, which defines wether the MongoClient to be used is shared or not
    */
   public static final String SHARED_PROP = "shared";
@@ -83,6 +103,9 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
   private boolean shared = false;
   private String dbName = DEFAULT_DB_NAME;
   private MongoClient mongoClient;
+  private String collectionName;
+  private String referenceName;
+  private JsonObject referenceQuery;
 
   /**
    * @param name
@@ -100,6 +123,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
   @Override
   public void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception {
     try {
+      LOGGER.info("init of MongoKeyGenerator");
       Properties props = settings.getGeneratorProperties();
       shared = Boolean.valueOf(props.getProperty(SHARED_PROP, "false"));
       startMongoLocal = Boolean.valueOf(props.getProperty(START_MONGO_LOCAL_PROP, "false"));
@@ -111,15 +135,45 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
         connectionString = props.getProperty(CONNECTION_STRING_PROPERTY, DEFAULT_CONNECTION);
       }
       dbName = props.getProperty(DBNAME_PROP, DEFAULT_DB_NAME);
+      collectionName = props.getProperty(COLLECTTION_PROP, DEFAULT_COLLECTION_NAME);
+      referenceName = props.getProperty(REFERENCE_NAME_PROP, DEFAULT_REFERENCE_NAME);
+      referenceQuery = new JsonObject().put(REFERENCE_FIELD_NAME, referenceName);
       startMongoExe(startMongoLocal, localPort);
-      initMongoClient(handler);
+      initMongoClient(res -> {
+        if (res.failed()) {
+          handler.handle(res);
+        } else {
+          initCounterCollection(handler);
+        }
+      });
     } catch (Exception e) {
       handler.handle(Future.failedFuture(e));
     }
   }
 
-  private void initCounterCollection(MongoClient client) {
-
+  private void initCounterCollection(Handler<AsyncResult<Void>> handler) {
+    LOGGER.info("Init of sequence collection with " + collectionName);
+    mongoClient.count(collectionName, referenceQuery, result -> {
+      if (result.failed()) {
+        handler.handle(Future.failedFuture(result.cause()));
+      } else {
+        long count = result.result();
+        if (count == 0) {
+          LOGGER.info("Inserting initial sequence record into collection " + collectionName);
+          this.mongoClient.insert(collectionName, referenceQuery, insertResult -> {
+            if (result.failed()) {
+              handler.handle(Future.failedFuture(insertResult.cause()));
+            } else {
+              LOGGER.info(result);
+              handler.handle(Future.succeededFuture());
+            }
+          });
+        } else {
+          LOGGER.info("Record exists already");
+          handler.handle(Future.succeededFuture());
+        }
+      }
+    });
   }
 
   private void initMongoClient(Handler<AsyncResult<Void>> handler) {
@@ -176,7 +230,55 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    */
   @Override
   public void generateKey(Message<?> message) {
-    message.reply("errr");
+    String key = (String) message.body();
+    if (key == null || key.hashCode() == 0) {
+      message.fail(-1, "no keyname sent!");
+    }
+    generateKey(key, message);
+  }
+
+  private void generateKey(String key, Message<?> message) {
+    JsonObject execComnand = createSequenceCommand(key);
+    mongoClient.runCommand("findAndModify", execComnand, ur -> {
+      if (ur.failed()) {
+        LOGGER.error("", ur.cause());
+        message.fail(-1, ur.cause().toString());
+      } else {
+        LOGGER.info(ur.result());
+        JsonObject resJo = ur.result();
+        JsonObject value = resJo.getJsonObject("value");
+        long seq = value.getLong(key);
+        message.reply(seq);
+      }
+    });
+  }
+
+  private JsonObject createSequenceCommand(String key) {
+    JsonObject updateCommand = new JsonObject().put("$inc", new JsonObject().put(key, 1));
+    return createFindAndModify(collectionName, updateCommand);
+  }
+
+  /*
+   * {
+   * findAndModify: <collection-name>,
+   * query: <document>,
+   * sort: <document>,
+   * remove: <boolean>,
+   * update: <document>,
+   * new: <boolean>,
+   * fields: <document>,
+   * upsert: <boolean>,
+   * bypassDocumentValidation: <boolean>,
+   * writeConcern: <document>
+   * }
+   */
+  private JsonObject createFindAndModify(String collection, JsonObject updateCommand) {
+    JsonObject retOb = new JsonObject();
+    retOb.put("findAndModify", collection);
+    retOb.put("query", this.referenceQuery);
+    retOb.put("update", updateCommand);
+    retOb.put("new", true);
+    return retOb;
   }
 
   /*

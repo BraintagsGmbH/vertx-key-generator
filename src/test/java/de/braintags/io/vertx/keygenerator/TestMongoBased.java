@@ -24,10 +24,32 @@ import io.vertx.ext.unit.TestContext;
  * 
  */
 public class TestMongoBased extends KeyGenBaseTest {
+  private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
+      .getLogger(TestMongoBased.class);
+
+  private static final String COLLECTION = "MySequenceCollection";
+  private long currentCounter;
 
   @Test
-  public void test(TestContext context) {
-    context.fail("Not yet implemented");
+  public void testOne(TestContext context) {
+    currentCounter = requestNext(context, "TestMapper", currentCounter + 1);
+  }
+
+  @Test
+  public void testMore(TestContext context) {
+    for (int i = 1; i < 50; i++) {
+      currentCounter = requestNext(context, "TestMapper", currentCounter + 1);
+    }
+  }
+
+  @Test
+  public void testError(TestContext context) {
+    try {
+      requestNext(context, "", -1);
+      context.fail("expected an exception here");
+    } catch (AssertionError e) {
+      context.assertTrue(e.getMessage().contains("-1"), "The message should contain the code -1");
+    }
   }
 
   /*
@@ -39,7 +61,19 @@ public class TestMongoBased extends KeyGenBaseTest {
   @Override
   protected void modifySettings(TestContext context, Settings settings) {
     settings.setKeyGeneratorClass(MongoKeyGenerator.class);
+    settings.getGeneratorProperties().put(MongoKeyGenerator.COLLECTTION_PROP, COLLECTION);
     super.modifySettings(context, settings);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.braintags.io.vertx.keygenerator.KeyGenBaseTest#initTest(io.vertx.ext.unit.TestContext)
+   */
+  @Override
+  public void initTest(TestContext context) {
+    super.initTest(context);
+    currentCounter = requestNext(context, "TestMapper", -1);
   }
 
 }

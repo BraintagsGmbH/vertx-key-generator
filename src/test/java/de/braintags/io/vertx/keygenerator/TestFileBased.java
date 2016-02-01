@@ -27,12 +27,12 @@ public class TestFileBased extends KeyGenBaseTest {
   private long currentCounter;
 
   @Test
-  public void test(TestContext context) {
+  public void testOne(TestContext context) {
     currentCounter = requestNext(context, "TestMapper", currentCounter + 1);
   }
 
   @Test
-  public void test2(TestContext context) {
+  public void testMore(TestContext context) {
     for (int i = 1; i < 50; i++) {
       currentCounter = requestNext(context, "TestMapper", currentCounter + 1);
     }
