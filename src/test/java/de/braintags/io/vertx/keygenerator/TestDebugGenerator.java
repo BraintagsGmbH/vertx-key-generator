@@ -44,9 +44,9 @@ public class TestDebugGenerator extends KeyGenBaseTest {
    * de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  protected void modifySettings(TestContext context, Settings settings) {
+  protected void modifyKeyGeneratorVerticleSettings(TestContext context, Settings settings) {
     settings.setKeyGeneratorClass(DebugGenerator.class);
-    super.modifySettings(context, settings);
+    super.modifyKeyGeneratorVerticleSettings(context, settings);
   }
 
 }

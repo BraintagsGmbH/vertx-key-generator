@@ -66,9 +66,9 @@ public class TestFileBased extends KeyGenBaseTest {
    * de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  protected void modifySettings(TestContext context, Settings settings) {
+  protected void modifyKeyGeneratorVerticleSettings(TestContext context, Settings settings) {
     settings.setKeyGeneratorClass(FileKeyGenerator.class);
-    super.modifySettings(context, settings);
+    super.modifyKeyGeneratorVerticleSettings(context, settings);
     settings.getGeneratorProperties().put(FileKeyGenerator.DESTINATION_DIRECTORY_PROP, "tmp");
     settings.getGeneratorProperties().put(FileKeyGenerator.RESET_PROP, "true");
   }
