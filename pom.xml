@@ -18,10 +18,10 @@
 	<properties>
 		<sonar.language>java</sonar.language>
 		<sonar.host.url>http://sqube.bt-rz.net</sonar.host.url>
-		<testjar.skip>true</testjar.skip>
-		<doc.skip>true</doc.skip>
-		<maven.test.skip>true</maven.test.skip>
-		<source.skip>true</source.skip>
+		<testjar.skip>false</testjar.skip>
+		<doc.skip>false</doc.skip>
+		<maven.test.skip>false</maven.test.skip>
+		<source.skip>false</source.skip>
 		<MONGO_VERSION>3.0.0</MONGO_VERSION>
 	</properties>
 
