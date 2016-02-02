@@ -39,11 +39,19 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
    * The property, which defines the destination directory, where the local file is stored
    */
   public static final String DESTINATION_DIRECTORY_PROP = "destinationDirectory";
+
+  /**
+   * The property, which defines, wether the file, where the current values are stored, shall be reset
+   */
+  public static final String RESET_PROP = "doReset";
+
   private static final String FILENAME = FileKeyGenerator.class.getSimpleName();
+
   private JsonObject keyMap;
   private String destinationDir;
   private String fileDestination;
   private FileSystem fileSystem;
+  private boolean reset;
 
   /**
    * @param name
@@ -65,6 +73,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
           Settings.LOCAL_USER_DIRECTORY);
       fileDestination = destinationDir + (destinationDir.endsWith("/") ? "" : "/") + FILENAME;
       fileSystem = getVertx().fileSystem();
+      reset = Boolean.valueOf(settings.getGeneratorProperties().getProperty(RESET_PROP, "false"));
       LOGGER.info("Storing file into " + fileDestination);
       loadKeyMap();
       handler.handle(Future.succeededFuture());
@@ -135,8 +144,13 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
       fileSystem.mkdirsBlocking(destinationDir);
     }
     if (fileSystem.existsBlocking(fileDestination)) {
-      Buffer buffer = fileSystem.readFileBlocking(fileDestination);
-      keyMap = new JsonObject(buffer.toString());
+      if (reset) {
+        fileSystem.deleteBlocking(fileDestination);
+        keyMap = new JsonObject();
+      } else {
+        Buffer buffer = fileSystem.readFileBlocking(fileDestination);
+        keyMap = new JsonObject(buffer.toString());
+      }
     } else {
       keyMap = new JsonObject();
     }

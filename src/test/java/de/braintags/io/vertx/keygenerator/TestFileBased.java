@@ -70,6 +70,7 @@ public class TestFileBased extends KeyGenBaseTest {
     settings.setKeyGeneratorClass(FileKeyGenerator.class);
     super.modifySettings(context, settings);
     settings.getGeneratorProperties().put(FileKeyGenerator.DESTINATION_DIRECTORY_PROP, "tmp");
+    settings.getGeneratorProperties().put(FileKeyGenerator.RESET_PROP, "true");
   }
 
 }
