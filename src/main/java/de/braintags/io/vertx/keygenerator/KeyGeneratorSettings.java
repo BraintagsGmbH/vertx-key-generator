@@ -39,9 +39,9 @@ import io.vertx.core.json.Json;
  * @author Michael Remme
  * 
  */
-public class Settings {
+public class KeyGeneratorSettings {
   private static final io.vertx.core.logging.Logger LOGGER = io.vertx.core.logging.LoggerFactory
-      .getLogger(Settings.class);
+      .getLogger(KeyGeneratorSettings.class);
 
   /**
    * The property which can be used to set the location of the stored file with Settings information
@@ -71,7 +71,7 @@ public class Settings {
    *          the settings file is defined
    * @return
    */
-  public static Settings loadSettings(Vertx vertx, Class<? extends IKeyGenerator> defaultClass, Context context)
+  public static KeyGeneratorSettings loadSettings(Vertx vertx, Class<? extends IKeyGenerator> defaultClass, Context context)
       throws Exception {
     String path = context.config().getString(SETTINGS_LOCATION_PROPERTY);
     if (path != null) {
@@ -84,18 +84,18 @@ public class Settings {
     }
   }
 
-  private static Settings loadSettings(Vertx vertx, Class<? extends IKeyGenerator> defaultClass, String path)
+  private static KeyGeneratorSettings loadSettings(Vertx vertx, Class<? extends IKeyGenerator> defaultClass, String path)
       throws Exception {
     FileSystem fs = vertx.fileSystem();
     if (fs.existsBlocking(path)) {
       LOGGER.info("going to load settings from " + path);
       Buffer buffer = fs.readFileBlocking(path);
-      Settings settings = Json.decodeValue(buffer.toString(), Settings.class);
+      KeyGeneratorSettings settings = Json.decodeValue(buffer.toString(), KeyGeneratorSettings.class);
       LOGGER.info("settings successfully loaded from " + path);
       return settings;
     } else {
       LOGGER.info("creating default settings and store them in " + path);
-      Settings settings = createDefaultSettings(defaultClass);
+      KeyGeneratorSettings settings = createDefaultSettings(defaultClass);
       fs.writeFileBlocking(path, Buffer.buffer(Json.encodePrettily(settings)));
       String message = String.format(
           "Settings file did not exist and was created new in path %s. NOTE: edit the file, set edited to true and restart the server",
@@ -105,8 +105,8 @@ public class Settings {
 
   }
 
-  private static final Settings createDefaultSettings(Class<? extends IKeyGenerator> cls) throws Exception {
-    Settings settings = new Settings();
+  private static final KeyGeneratorSettings createDefaultSettings(Class<? extends IKeyGenerator> cls) throws Exception {
+    KeyGeneratorSettings settings = new KeyGeneratorSettings();
     settings.keyGeneratorClass = cls;
     IKeyGenerator gen = cls.newInstance();
     settings.generatorProperties = gen.createDefaultProperties();

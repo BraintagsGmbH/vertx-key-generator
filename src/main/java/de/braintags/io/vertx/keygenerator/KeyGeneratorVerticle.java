@@ -14,7 +14,7 @@ package de.braintags.io.vertx.keygenerator;
 
 import java.util.Objects;
 
-import de.braintags.io.vertx.keygenerator.impl.FileKeyGenerator;
+import de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator;
 import de.braintags.io.vertx.util.exception.InitException;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -30,7 +30,7 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
       .getLogger(KeyGeneratorVerticle.class);
   public static final String SERVICE_NAME = KeyGeneratorVerticle.class.getName();
 
-  private Settings settings;
+  private KeyGeneratorSettings settings;
 
   /**
    * The verticle knows only one IKeyGenerator. If different generators shall be used, then the implementation of a
@@ -49,7 +49,7 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
    * 
    * @param settings
    */
-  public KeyGeneratorVerticle(Settings settings) {
+  public KeyGeneratorVerticle(KeyGeneratorSettings settings) {
     this.settings = settings;
   }
 
@@ -105,14 +105,14 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
   }
 
   /**
-   * Initialize the {@link Settings} which are used to init the current instance
+   * Initialize the {@link KeyGeneratorSettings} which are used to init the current instance
    * 
    * @return
    * @throws Exception
    */
-  protected Settings initSettings() throws Exception {
+  protected KeyGeneratorSettings initSettings() throws Exception {
     try {
-      Settings settings = Settings.loadSettings(vertx, FileKeyGenerator.class, context);
+      KeyGeneratorSettings settings = KeyGeneratorSettings.loadSettings(vertx, MongoKeyGenerator.class, context);
       if (!settings.isEdited()) {
         throw new InitException(
             "The settings are not yet edited. Change the value of property 'edited' to true inside the appropriate file");

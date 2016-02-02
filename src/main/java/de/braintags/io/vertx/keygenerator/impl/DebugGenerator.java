@@ -14,7 +14,7 @@ package de.braintags.io.vertx.keygenerator.impl;
 
 import java.util.Properties;
 
-import de.braintags.io.vertx.keygenerator.Settings;
+import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -47,7 +47,7 @@ public class DebugGenerator extends AbstractKeyGenerator {
    * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(Settings settings, Handler<AsyncResult<Void>> handler) {
+  public void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) {
     handler.handle(Future.succeededFuture());
   }
 

@@ -15,7 +15,7 @@ package de.braintags.io.vertx.keygenerator.impl;
 import java.io.IOException;
 import java.util.Properties;
 
-import de.braintags.io.vertx.keygenerator.Settings;
+import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -67,10 +67,10 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception {
+  public void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) throws Exception {
     try {
       destinationDir = settings.getGeneratorProperties().getProperty(DESTINATION_DIRECTORY_PROP,
-          Settings.LOCAL_USER_DIRECTORY);
+          KeyGeneratorSettings.LOCAL_USER_DIRECTORY);
       fileDestination = destinationDir + (destinationDir.endsWith("/") ? "" : "/") + FILENAME;
       fileSystem = getVertx().fileSystem();
       reset = Boolean.valueOf(settings.getGeneratorProperties().getProperty(RESET_PROP, "false"));
@@ -90,7 +90,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
   @Override
   public Properties createDefaultProperties() {
     Properties props = new Properties();
-    props.put(DESTINATION_DIRECTORY_PROP, Settings.LOCAL_USER_DIRECTORY);
+    props.put(DESTINATION_DIRECTORY_PROP, KeyGeneratorSettings.LOCAL_USER_DIRECTORY);
     return props;
   }
 

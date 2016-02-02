@@ -101,7 +101,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
   }
 
   public KeyGeneratorVerticle createKeyGenerator(TestContext context) {
-    Settings settings = new Settings();
+    KeyGeneratorSettings settings = new KeyGeneratorSettings();
     modifyKeyGeneratorVerticleSettings(context, settings);
     return new KeyGeneratorVerticle(settings);
   }
@@ -112,7 +112,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
    * @param context
    * @param settings
    */
-  protected void modifyKeyGeneratorVerticleSettings(TestContext context, Settings settings) {
+  protected void modifyKeyGeneratorVerticleSettings(TestContext context, KeyGeneratorSettings settings) {
   }
 
 }

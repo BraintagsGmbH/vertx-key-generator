@@ -15,7 +15,7 @@ package de.braintags.io.vertx.keygenerator.impl;
 import java.io.IOException;
 import java.util.Properties;
 
-import de.braintags.io.vertx.keygenerator.Settings;
+import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
 import de.braintags.io.vertx.util.exception.InitException;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -121,7 +121,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception {
+  public void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) throws Exception {
     try {
       LOGGER.info("init of MongoKeyGenerator");
       Properties props = settings.getGeneratorProperties();

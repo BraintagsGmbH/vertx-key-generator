@@ -13,7 +13,7 @@
 package de.braintags.io.vertx.keygenerator.impl;
 
 import de.braintags.io.vertx.keygenerator.IKeyGenerator;
-import de.braintags.io.vertx.keygenerator.Settings;
+import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -64,7 +64,7 @@ public abstract class AbstractKeyGenerator implements IKeyGenerator {
    * io.vertx.core.Vertx)
    */
   @Override
-  public final void init(Settings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception {
+  public final void init(KeyGeneratorSettings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception {
     this.vertx = vertx;
     init(settings, handler);
   }
@@ -76,7 +76,7 @@ public abstract class AbstractKeyGenerator implements IKeyGenerator {
    * @param handler
    *          the handler to be informed
    */
-  protected abstract void init(Settings settings, Handler<AsyncResult<Void>> handler) throws Exception;
+  protected abstract void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) throws Exception;
 
   /**
    * @return the vertx

@@ -59,7 +59,7 @@ public class TestMongoBased extends KeyGenBaseTest {
    * de.braintags.io.vertx.keygenerator.Settings)
    */
   @Override
-  protected void modifyKeyGeneratorVerticleSettings(TestContext context, Settings settings) {
+  protected void modifyKeyGeneratorVerticleSettings(TestContext context, KeyGeneratorSettings settings) {
     settings.setKeyGeneratorClass(MongoKeyGenerator.class);
     settings.getGeneratorProperties().put(MongoKeyGenerator.COLLECTTION_PROP, COLLECTION);
     super.modifyKeyGeneratorVerticleSettings(context, settings);

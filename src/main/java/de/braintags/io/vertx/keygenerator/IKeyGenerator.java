@@ -37,10 +37,10 @@ public interface IKeyGenerator {
    * @param handler
    *          the handler to be informed
    */
-  void init(Settings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception;
+  void init(KeyGeneratorSettings settings, Vertx vertx, Handler<AsyncResult<Void>> handler) throws Exception;
 
   /**
-   * This method is requested, when the {@link Settings} are created new
+   * This method is requested, when the {@link KeyGeneratorSettings} are created new
    * 
    * @return
    */
