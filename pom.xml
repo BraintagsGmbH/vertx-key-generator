@@ -28,8 +28,9 @@
 
 
 	<scm>
-		<url>https://github.com/BraintagsGmbH/vertx-util.git</url>
+		<url>https://github.com/BraintagsGmbH/vertx-key-generator.git</url>
 	</scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>de.braintags</groupId>
