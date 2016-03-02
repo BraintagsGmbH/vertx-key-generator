@@ -20,7 +20,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 
 /**
- * The IKeyGenerator is used to generate key for use with external applications
+ * The IKeyGenerator is used to generate keys for use with external applications
  * 
  * @author Michael Remme
  * 

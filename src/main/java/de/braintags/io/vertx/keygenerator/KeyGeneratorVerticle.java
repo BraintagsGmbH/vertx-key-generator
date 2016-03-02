@@ -1,6 +1,6 @@
 /*
  * #%L
- * netrelay
+ * vertx-key-generator
  * %%
  * Copyright (C) 2015 Braintags GmbH
  * %%
@@ -15,12 +15,13 @@ package de.braintags.io.vertx.keygenerator;
 import java.util.Objects;
 
 import de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator;
+import de.braintags.io.vertx.util.ExceptionUtil;
 import de.braintags.io.vertx.util.exception.InitException;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 
 /**
- * A verticle which is generating IDs
+ * A verticle which is generating unique IDs, which can be used by external applications.
  * 
  * @author Michael Remme
  * 
@@ -42,6 +43,7 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
    * Create a new instance by reading the settings from local file
    */
   public KeyGeneratorVerticle() {
+    // empty
   }
 
   /**
@@ -110,17 +112,17 @@ public class KeyGeneratorVerticle extends AbstractVerticle {
    * @return
    * @throws Exception
    */
-  protected KeyGeneratorSettings initSettings() throws Exception {
+  protected KeyGeneratorSettings initSettings() {
     try {
-      KeyGeneratorSettings settings = KeyGeneratorSettings.loadSettings(vertx, MongoKeyGenerator.class, context);
-      if (!settings.isEdited()) {
+      KeyGeneratorSettings s = KeyGeneratorSettings.loadSettings(vertx, MongoKeyGenerator.class, context);
+      if (!s.isEdited()) {
         throw new InitException(
             "The settings are not yet edited. Change the value of property 'edited' to true inside the appropriate file");
       }
-      return settings;
+      return s;
     } catch (Exception e) {
       LOGGER.error("", e);
-      throw e;
+      throw ExceptionUtil.createRuntimeException(e);
     }
   }
 

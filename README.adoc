@@ -1,0 +1,6 @@
+= vertx-key-generator
+
+*a verticle for the generation of unique IDs*
+
+*link:vertx-key-generator/src/main/asciidoc/java/index.adoc[documentation]*
+
