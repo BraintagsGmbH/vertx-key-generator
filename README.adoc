@@ -4,11 +4,10 @@
 
 See the documentation under
 
-* link:src/docs/asciidoc/java/index.adoc[ java ]
-* link:src/docs/asciidoc/js/index.adoc[ java-script ]
-* link:src/docs/asciidoc/ruby/index.adoc[ ruby ]
-* link:src/docs/asciidoc/groovy/index.adoc[ groovy ]
+* link:src/main/asciidoc/java/index.adoc[ java ]
+* link:src/main/asciidoc/js/index.adoc[ java-script ]
+* link:src/main/asciidoc/ruby/index.adoc[ ruby ]
+* link:src/main/asciidoc/groovy/index.adoc[ groovy ]
 
-*link:vertx-key-generator/src/docs/asciidoc/java/index.adoc[documentation]*
 
 
