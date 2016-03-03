@@ -10,12 +10,38 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-
 /**
+ * :numbered:
+ * :toc: left
+ * :toclevels: 3
+ * 
  * == Generator for unique identifyers
  *
  * Keygenerator is a Verticle to create unique IDs in different ways and is used by the project Vertx-Pojo-Mapper, for
  * instance, to locally create primary keys for new records.
+ * 
+ * ### Using Keygenerator in Maven or Gradle project
+ *
+ * Add a dependency to the artifact.
+ *
+ * * Maven (in your `pom.xml`):
+ *
+ * [source,xml,subs="+attributes"]
+ * ----
+ * <dependency>
+ * <groupId>${maven.groupId}</groupId>
+ * <artifactId>${maven.artifactId}</artifactId>
+ * <version>${maven.version}</version>
+ * </dependency>
+ * ----
+ *
+ * * Gradle (in your `build.gradle` file):
+ *
+ * [source,groovy,subs="+attributes"]
+ * ----
+ * compile '${maven.groupId}:${maven.artifactId}:${maven.version}'
+ * ----
+ * 
  * 
  * === Initialization of the verticle
  * The verticle is initialized by reading a local Json file. The location of this file can be defined by adding the
@@ -33,7 +59,7 @@
  * 
  * Above is displayed an example settings file, which uses MongoDb as a source of key generation.
  * 
- * [source,json]
+ * [source,java]
  * ----
  * {
  * "edited" : true,
@@ -82,4 +108,7 @@
  * 
  */
 
+@Document(fileName = "index.adoc")
 package de.braintags.io.vertx.keygenerator;
+
+import io.vertx.docgen.Document;

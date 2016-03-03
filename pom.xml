@@ -16,9 +16,8 @@
 	</parent>
 
 	<properties>
-		<jacoco.haltOnFailure>false</jacoco.haltOnFailure>
-		<sonar.language>java</sonar.language>
-		<sonar.host.url>http://sqube.bt-rz.net</sonar.host.url>
+		<maven.javadoc.skip>false</maven.javadoc.skip>	
+		<jacoco.haltOnFailure>true</jacoco.haltOnFailure>
 		<testjar.skip>false</testjar.skip>
 		<doc.skip>false</doc.skip>
 		<maven.test.skip>false</maven.test.skip>
