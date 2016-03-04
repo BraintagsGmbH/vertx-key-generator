@@ -1,0 +1,103 @@
+:numbered:
+:toc: left
+:toclevels: 3
+
+== Generator for unique identifyers
+
+Keygenerator is a Verticle to create unique IDs in different ways and is used by the project Vertx-Pojo-Mapper, for
+instance, to locally create primary keys for new records.
+
+### Using Keygenerator in Maven or Gradle project
+
+Add a dependency to the artifact
+
+.
+
+* Maven (in your `pom.xml`):
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+<groupId>de.braintags</groupId>
+<artifactId>vertx-key-generator</artifactId>
+<version>1.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+* Gradle (in your `build.gradle` file):
+
+[source,groovy,subs="+attributes"]
+----
+compile 'de.braintags:vertx-key-generator:1.0.0-SNAPSHOT'
+----
+
+
+=== Initialization of the verticle
+The verticle is initialized by reading a local Json file. The location of this file can be defined by adding the
+location into the deployment options like shown in the example above. If this property is not set, then a default
+location is used, which refers to the local user directory and there inside the path
+".braintags/vertx/KeyGenerator/KeyGeneratorVerticle.settings.json"
+If the settings file does not exist, it will be created with some default data and then the application will exit
+with an exception, which shows the location of the created settings. You will have to edit the settings file and will
+have at a minimum to set the property "edited" to true, otherwise the application won't launch.
+
+[source,java]
+----
+Code not translatable
+----
+
+Above is displayed an example settings file, which uses MongoDb as a source of key generation.
+
+[source,java]
+----
+{
+"edited" : true,
+"keyGeneratorClass" : "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
+"generatorProperties" : {
+"db_name" : "KeygeneratoDb",
+"startMongoLocal" : "false",
+"localPort" : "27018",
+"connection_string" : "mongodb://192.168.42.129:27017",
+"shared" : "false"
+}
+}
+----
+The main information of the settings file is the property "keyGeneratorClass", which must refer to an existing
+implementation of `IKeyGenerator`. Some implementations are described below.
+Aside this, the field generatorProperties exists, where inside some properties must or can be defined, which are
+depending on the defined keyGeneratorClass.
+
+=== Requesting a key from an application
+
+[source,java]
+----
+var vertx;
+vertx.eventBus().send(Java.type("de.braintags.io.vertx.keygenerator.KeyGeneratorVerticle").SERVICE_NAME, keyContext, function (result, result_err) {
+  if (result_err != null) {
+    result_err.printStackTrace();
+  } else {
+    var id = result.body();
+    console.log(id);
+  }
+});
+
+----
+
+To retrive a key, one is sending an event to the vertx eventbus, where a name can be sent as a parameter. For each
+different name, which is sent here, one unique id sequence is generated. The returned id is then of type long.
+
+
+=== The different versions of `IKeyGenerator`
+
+`DebugGenerator`
+Can be used for debugging or testing purpose. For each application start it starts with 0.
+
+`FileKeyGenerator`
+This implementation stores the current state of the id generator as local file. By using the property
+`link:todo[FileKeyGenerator.DESTINATION_DIRECTORY_PROP]` you can define the
+location of this file.
+
+`MongoKeyGenerator`
+MongoKeyGenerator is using MongoDb as a source to store the state of the id generator. In the properties one will
+define the location and the name of the database which shall be used.
+Michael Remme
