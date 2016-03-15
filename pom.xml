@@ -6,13 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>vertx-key-generator</artifactId>
-	<version>1.0.0-ms1</version>
+	<version>1.0.0</version>
 	<name>Verticle for generation of IDs</name>
 
 	<parent>
 		<groupId>de.braintags</groupId>
 		<artifactId>btVertxBasePOM</artifactId>
-		<version>10</version>
+		<version>11</version>
 	</parent>
 
 	<properties>
@@ -22,10 +22,7 @@
 		<doc.skip>false</doc.skip>
 		<maven.test.skip>false</maven.test.skip>
 		<source.skip>false</source.skip>
-		<MONGO_VERSION>3.0.0</MONGO_VERSION>
 	</properties>
-
-
 
 	<scm>
 		<url>https://github.com/BraintagsGmbH/vertx-key-generator.git</url>
@@ -35,12 +32,10 @@
 		<dependency>
 			<groupId>de.braintags</groupId>
 			<artifactId>vertx-util</artifactId>
-			<version>1.0.0-ms1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.braintags</groupId>
 			<artifactId>vertx-util</artifactId>
-			<version>1.0.0-ms1</version>
 			<classifier>tests</classifier>
 		</dependency>
 		
@@ -62,7 +57,6 @@
 			<artifactId>vertx-mongo-service</artifactId>
 			<scope>test</scope>
 			<classifier>tests</classifier>
-			<version>${MONGO_VERSION}</version>
 		</dependency>
 	</dependencies>
 </project>

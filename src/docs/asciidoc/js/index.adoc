@@ -20,7 +20,7 @@ Add a dependency to the artifact
 <dependency>
 <groupId>de.braintags</groupId>
 <artifactId>vertx-key-generator</artifactId>
-<version>1.0.0-ms1</version>
+<version>1.0.0</version>
 </dependency>
 ----
 
@@ -28,7 +28,7 @@ Add a dependency to the artifact
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'de.braintags:vertx-key-generator:1.0.0-ms1'
+compile 'de.braintags:vertx-key-generator:1.0.0'
 ----
 
 
