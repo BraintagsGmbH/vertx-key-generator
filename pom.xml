@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>de.braintags</groupId>
 		<artifactId>btVertxBasePOM</artifactId>
-		<version>11</version>
+		<version>12</version>
 	</parent>
 
 	<properties>
@@ -22,10 +22,13 @@
 		<doc.skip>false</doc.skip>
 		<maven.test.skip>false</maven.test.skip>
 		<source.skip>false</source.skip>
+		<maven.compiler.plugin>false</maven.compiler.plugin>
 	</properties>
 
 	<scm>
-		<url>https://github.com/BraintagsGmbH/vertx-key-generator.git</url>
+		<connection>scm:git:git@github.com:BraintagsGmbH/vertx-key-generator.git</connection>
+		<developerConnection>scm:git:git@github.com:BraintagsGmbH/vertx-key-generator.git</developerConnection>
+		<url>git@github.com:BraintagsGmbH/vertx-key-generator.git</url>
 	</scm>
 	
 	<dependencies>
@@ -59,4 +62,6 @@
 			<classifier>tests</classifier>
 		</dependency>
 	</dependencies>
+	<url>https://github.com/BraintagsGmbH/vertx-key-generator</url>
+	<description>a verticle for the generation of unique IDs</description>
 </project>
