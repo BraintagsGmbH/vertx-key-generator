@@ -50,7 +50,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
   public static final String START_MONGO_LOCAL_PROP = "startMongoLocal";
 
   /**
-   * If START_MONGO_LOCAL_PROP is set to true, then this defines the local port to be used. Default is 27018
+   * If START_MONGO_LOCAL_PROP is set to true, then this defines the local port to be used. Default is 27017
    */
   public static final String LOCAL_PORT_PROP = "localPort";
 
@@ -304,7 +304,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     Properties props = new Properties();
     props.put(CONNECTION_STRING_PROPERTY, DEFAULT_CONNECTION);
     props.put(START_MONGO_LOCAL_PROP, "false");
-    props.put(LOCAL_PORT_PROP, "27018");
+    props.put(LOCAL_PORT_PROP, "27017");
     props.put(SHARED_PROP, "false");
     props.put(DBNAME_PROP, DEFAULT_DB_NAME);
     return props;

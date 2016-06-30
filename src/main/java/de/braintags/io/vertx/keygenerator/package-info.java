@@ -67,7 +67,7 @@
  * "generatorProperties" : {
  * "db_name" : "KeygeneratoDb",
  * "startMongoLocal" : "false",
- * "localPort" : "27018",
+ * "localPort" : "27017",
  * "connection_string" : "mongodb://192.168.42.129:27017",
  * "shared" : "false"
  * }

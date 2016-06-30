@@ -62,6 +62,8 @@ public class TestMongoBased extends KeyGenBaseTest {
   protected void modifyKeyGeneratorVerticleSettings(TestContext context, KeyGeneratorSettings settings) {
     settings.setKeyGeneratorClass(MongoKeyGenerator.class);
     settings.getGeneratorProperties().put(MongoKeyGenerator.COLLECTTION_PROP, COLLECTION);
+    settings.getGeneratorProperties().put(MongoKeyGenerator.START_MONGO_LOCAL_PROP,
+        System.getProperty(MongoKeyGenerator.START_MONGO_LOCAL_PROP));
     super.modifyKeyGeneratorVerticleSettings(context, settings);
   }
 
