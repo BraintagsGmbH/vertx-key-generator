@@ -290,6 +290,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
   public void shutdown(Handler<AsyncResult<Void>> handler) {
     if (exe != null) {
       exe.stop();
+      exe = null;
     }
     super.shutdown(handler);
   }
