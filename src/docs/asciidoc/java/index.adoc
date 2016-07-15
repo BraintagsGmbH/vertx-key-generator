@@ -20,7 +20,7 @@ Add a dependency to the artifact
 <dependency>
 <groupId>de.braintags</groupId>
 <artifactId>vertx-key-generator</artifactId>
-<version>1.2.0</version>
+<version>1.3.1</version>
 </dependency>
 ----
 
@@ -28,7 +28,7 @@ Add a dependency to the artifact
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'de.braintags:vertx-key-generator:1.2.0'
+compile 'de.braintags:vertx-key-generator:1.3.1'
 ----
 
 
@@ -65,7 +65,7 @@ Above is displayed an example settings file, which uses MongoDb as a source of k
 "generatorProperties" : {
 "db_name" : "KeygeneratoDb",
 "startMongoLocal" : "false",
-"localPort" : "27018",
+"localPort" : "27017",
 "connection_string" : "mongodb://192.168.42.129:27017",
 "shared" : "false"
 }
