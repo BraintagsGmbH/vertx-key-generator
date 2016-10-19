@@ -18,6 +18,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.docgen.Source;
 
 /**
  * 
@@ -33,7 +34,8 @@ public class Examples {
    */
   public Examples() {
   }
-
+  
+  @Source(translate = false)
   public void initKeyGeneratorVerticle(Vertx vertx, Future<Void> startFuture) {
     DeploymentOptions options = new DeploymentOptions();
     String settingsLocation = "settings/kgSettings.json";
