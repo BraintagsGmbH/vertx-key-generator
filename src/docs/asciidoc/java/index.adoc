@@ -9,9 +9,7 @@ instance, to locally create primary keys for new records.
 
 ### Using Keygenerator in Maven or Gradle project
 
-Add a dependency to the artifact
-
-.
+Add a dependency to the artifact:
 
 * Maven (in your `pom.xml`):
 
@@ -33,7 +31,9 @@ compile 'de.braintags:vertx-key-generator:1.3.2-SNAPSHOT'
 
 
 === Initialization of the verticle
-The verticle is initialized by reading a local Json file. The location of this file can be defined by adding the
+The verticle is initialized by reading a local Json file.
+
+The location of this file can be defined by adding the
 location into the deployment options like shown in the example above. If this property is not set, then a default
 location is used, which refers to the local user directory and there inside the path
 ".braintags/vertx/KeyGenerator/KeyGeneratorVerticle.settings.json"
@@ -60,14 +60,14 @@ Above is displayed an example settings file, which uses MongoDb as a source of k
 [source,java]
 ----
 {
-"edited" : true,
-"keyGeneratorClass" : "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
-"generatorProperties" : {
-"db_name" : "KeygeneratoDb",
-"startMongoLocal" : "false",
-"localPort" : "27017",
-"connection_string" : "mongodb://192.168.42.129:27017",
-"shared" : "false"
+"edited": true,
+"keyGeneratorClass": "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
+"generatorProperties": {
+  "db_name": "KeygeneratoDb",
+  "startMongoLocal": "false",
+  "localPort": "27017",
+  "connection_string": "mongodb://192.168.42.129:27017",
+  "shared": "false"
 }
 }
 ----
