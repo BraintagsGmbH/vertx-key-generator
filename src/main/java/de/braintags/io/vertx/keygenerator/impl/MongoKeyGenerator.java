@@ -1,8 +1,8 @@
 /*
  * #%L
- * vertx-pojongo
+ * Verticle for generation of IDs
  * %%
- * Copyright (C) 2015 Braintags GmbH
+ * Copyright (C) 2017 Braintags GmbH
  * %%
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -159,12 +159,13 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
       } else {
         long count = result.result();
         if (count == 0) {
-          LOGGER.info("Inserting initial sequence record into collection " + collectionName);
+          LOGGER.info(
+              "Inserting initial sequence record into collection " + collectionName + " with query " + referenceQuery);
           this.mongoClient.insert(collectionName, referenceQuery, insertResult -> {
             if (result.failed()) {
               handler.handle(Future.failedFuture(insertResult.cause()));
             } else {
-              LOGGER.info(result);
+              LOGGER.info(result.result());
               handler.handle(Future.succeededFuture());
             }
           });

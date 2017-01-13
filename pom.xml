@@ -16,6 +16,11 @@
 	</parent>
 
 	<properties>
+		<license.canUpdateDescription>true</license.canUpdateDescription>
+		<license.canUpdateCopyright>true</license.canUpdateCopyright>
+		<license.canUpdateLicense>true</license.canUpdateLicense>
+		
+	
 		<maven.javadoc.skip>false</maven.javadoc.skip>	
 		<jacoco.haltOnFailure>false</jacoco.haltOnFailure>
 		<testjar.skip>false</testjar.skip>
