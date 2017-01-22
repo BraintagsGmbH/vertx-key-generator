@@ -12,8 +12,8 @@
  */
 package examples;
 
-import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
-import de.braintags.io.vertx.keygenerator.KeyGeneratorVerticle;
+import de.braintags.vertx.keygenerator.KeyGeneratorSettings;
+import de.braintags.vertx.keygenerator.KeyGeneratorVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;

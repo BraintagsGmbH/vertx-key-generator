@@ -10,10 +10,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-package de.braintags.io.vertx.keygenerator.impl;
+package de.braintags.vertx.keygenerator.impl;
 
-import de.braintags.io.vertx.keygenerator.IKeyGenerator;
-import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
+import de.braintags.vertx.keygenerator.IKeyGenerator;
+import de.braintags.vertx.keygenerator.KeyGeneratorSettings;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -49,7 +49,7 @@ public abstract class AbstractKeyGenerator implements IKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#shutdown(io.vertx.core.Handler)
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#shutdown(io.vertx.core.Handler)
    */
   @Override
   public void shutdown(Handler<AsyncResult<Void>> handler) {
@@ -60,7 +60,7 @@ public abstract class AbstractKeyGenerator implements IKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings,
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#init(de.braintags.vertx.keygenerator.Settings,
    * io.vertx.core.Vertx)
    */
   @Override

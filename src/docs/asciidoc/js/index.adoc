@@ -61,7 +61,7 @@ Above is displayed an example settings file, which uses MongoDb as a source of k
 ----
 {
 "edited": true,
-"keyGeneratorClass": "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
+"keyGeneratorClass": "de.braintags.vertx.keygenerator.impl.MongoKeyGenerator",
 "generatorProperties": {
   "db_name": "KeygeneratoDb",
   "startMongoLocal": "false",
@@ -81,7 +81,7 @@ depending on the defined keyGeneratorClass.
 [source,java]
 ----
 var vertx;
-vertx.eventBus().send(Java.type("de.braintags.io.vertx.keygenerator.KeyGeneratorVerticle").SERVICE_NAME, keyContext, function (result, result_err) {
+vertx.eventBus().send(Java.type("de.braintags.vertx.keygenerator.KeyGeneratorVerticle").SERVICE_NAME, keyContext, function (result, result_err) {
   if (result_err != null) {
     result_err.printStackTrace();
   } else {

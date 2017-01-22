@@ -10,11 +10,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-package de.braintags.io.vertx.keygenerator;
+package de.braintags.vertx.keygenerator;
 
 import java.util.Properties;
 
-import de.braintags.io.vertx.util.exception.InitException;
+import de.braintags.vertx.util.exception.InitException;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;

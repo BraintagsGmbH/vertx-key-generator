@@ -10,12 +10,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-package de.braintags.io.vertx.keygenerator.impl;
+package de.braintags.vertx.keygenerator.impl;
 
 import java.io.IOException;
 import java.util.Properties;
 
-import de.braintags.io.vertx.keygenerator.KeyGeneratorSettings;
+import de.braintags.vertx.keygenerator.KeyGeneratorSettings;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -64,7 +64,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#init(de.braintags.io.vertx.keygenerator.Settings)
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#init(de.braintags.vertx.keygenerator.Settings)
    */
   @Override
   public void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) throws Exception {
@@ -85,7 +85,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#createDefaultProperties()
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#createDefaultProperties()
    */
   @Override
   public Properties createDefaultProperties() {
@@ -97,7 +97,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#generateKey(java.lang.String)
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#generateKey(java.lang.String)
    */
   @Override
   public void generateKey(Message<?> message) {
@@ -159,7 +159,7 @@ public class FileKeyGenerator extends AbstractKeyGenerator {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.IKeyGenerator#shutdown(io.vertx.core.Handler)
+   * @see de.braintags.vertx.keygenerator.IKeyGenerator#shutdown(io.vertx.core.Handler)
    */
   @Override
   public void shutdown(Handler<AsyncResult<Void>> handler) {

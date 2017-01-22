@@ -61,7 +61,7 @@ Above is displayed an example settings file, which uses MongoDb as a source of k
 ----
 {
 "edited": true,
-"keyGeneratorClass": "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
+"keyGeneratorClass": "de.braintags.vertx.keygenerator.impl.MongoKeyGenerator",
 "generatorProperties": {
   "db_name": "KeygeneratoDb",
   "startMongoLocal": "false",
@@ -72,7 +72,7 @@ Above is displayed an example settings file, which uses MongoDb as a source of k
 }
 ----
 The main information of the settings file is the property "keyGeneratorClass", which must refer to an existing
-implementation of `link:../../apidocs/de/braintags/io/vertx/keygenerator/IKeyGenerator.html[IKeyGenerator]`. Some implementations are described below.
+implementation of `link:../../apidocs/de/braintags/vertx/keygenerator/IKeyGenerator.html[IKeyGenerator]`. Some implementations are described below.
 Aside this, the field generatorProperties exists, where inside some properties must or can be defined, which are
 depending on the defined keyGeneratorClass.
 
@@ -82,7 +82,7 @@ depending on the defined keyGeneratorClass.
 ----
 import groovy.transform.Field
 @Field def vertx
-vertx.eventBus().send(de.braintags.io.vertx.keygenerator.KeyGeneratorVerticle.SERVICE_NAME, keyContext, { result ->
+vertx.eventBus().send(de.braintags.vertx.keygenerator.KeyGeneratorVerticle.SERVICE_NAME, keyContext, { result ->
   if (result.failed()) {
     result.cause().printStackTrace()
   } else {
@@ -97,17 +97,17 @@ To retrive a key, one is sending an event to the vertx eventbus, where a name ca
 different name, which is sent here, one unique id sequence is generated. The returned id is then of type long.
 
 
-=== The different versions of `link:../../apidocs/de/braintags/io/vertx/keygenerator/IKeyGenerator.html[IKeyGenerator]`
+=== The different versions of `link:../../apidocs/de/braintags/vertx/keygenerator/IKeyGenerator.html[IKeyGenerator]`
 
-`link:../../apidocs/de/braintags/io/vertx/keygenerator/impl/DebugGenerator.html[DebugGenerator]`
+`link:../../apidocs/de/braintags/vertx/keygenerator/impl/DebugGenerator.html[DebugGenerator]`
 Can be used for debugging or testing purpose. For each application start it starts with 0.
 
-`link:../../apidocs/de/braintags/io/vertx/keygenerator/impl/FileKeyGenerator.html[FileKeyGenerator]`
+`link:../../apidocs/de/braintags/vertx/keygenerator/impl/FileKeyGenerator.html[FileKeyGenerator]`
 This implementation stores the current state of the id generator as local file. By using the property
-`link:../../apidocs/de/braintags/io/vertx/keygenerator/impl/FileKeyGenerator.html#DESTINATION_DIRECTORY_PROP[FileKeyGenerator.DESTINATION_DIRECTORY_PROP]` you can define the
+`link:../../apidocs/de/braintags/vertx/keygenerator/impl/FileKeyGenerator.html#DESTINATION_DIRECTORY_PROP[FileKeyGenerator.DESTINATION_DIRECTORY_PROP]` you can define the
 location of this file.
 
-`link:../../apidocs/de/braintags/io/vertx/keygenerator/impl/MongoKeyGenerator.html[MongoKeyGenerator]`
+`link:../../apidocs/de/braintags/vertx/keygenerator/impl/MongoKeyGenerator.html[MongoKeyGenerator]`
 MongoKeyGenerator is using MongoDb as a source to store the state of the id generator. In the properties one will
 define the location and the name of the database which shall be used.
 Michael Remme

@@ -63,7 +63,7 @@
  * ----
  * {
  * "edited": true,
- * "keyGeneratorClass": "de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator",
+ * "keyGeneratorClass": "de.braintags.vertx.keygenerator.impl.MongoKeyGenerator",
  * "generatorProperties": {
  *   "db_name": "KeygeneratoDb",
  *   "startMongoLocal": "false",
@@ -74,7 +74,7 @@
  *}
  * ----
  * The main information of the settings file is the property "keyGeneratorClass", which must refer to an existing
- * implementation of {@link de.braintags.io.vertx.keygenerator.IKeyGenerator}. Some implementations are described below.
+ * implementation of {@link de.braintags.vertx.keygenerator.IKeyGenerator}. Some implementations are described below.
  * Aside this, the field generatorProperties exists, where inside some properties must or can be defined, which are
  * depending on the defined keyGeneratorClass.
  *
@@ -89,17 +89,17 @@
  * different name, which is sent here, one unique id sequence is generated. The returned id is then of type long.
  *
  *
- * === The different versions of {@link de.braintags.io.vertx.keygenerator.IKeyGenerator}
+ * === The different versions of {@link de.braintags.vertx.keygenerator.IKeyGenerator}
  *
- * {@link de.braintags.io.vertx.keygenerator.impl.DebugGenerator}
+ * {@link de.braintags.vertx.keygenerator.impl.DebugGenerator}
  * Can be used for debugging or testing purpose. For each application start it starts with 0.
  *
- * {@link de.braintags.io.vertx.keygenerator.impl.FileKeyGenerator}
+ * {@link de.braintags.vertx.keygenerator.impl.FileKeyGenerator}
  * This implementation stores the current state of the id generator as local file. By using the property
- * {@link de.braintags.io.vertx.keygenerator.impl.FileKeyGenerator#DESTINATION_DIRECTORY_PROP} you can define the
+ * {@link de.braintags.vertx.keygenerator.impl.FileKeyGenerator#DESTINATION_DIRECTORY_PROP} you can define the
  * location of this file.
  *
- * {@link de.braintags.io.vertx.keygenerator.impl.MongoKeyGenerator}
+ * {@link de.braintags.vertx.keygenerator.impl.MongoKeyGenerator}
  * MongoKeyGenerator is using MongoDb as a source to store the state of the id generator. In the properties one will
  * define the location and the name of the database which shall be used.
  *
@@ -109,6 +109,6 @@
  */
 
 @Document(fileName = "index.adoc")
-package de.braintags.io.vertx.keygenerator;
+package de.braintags.vertx.keygenerator;
 
 import io.vertx.docgen.Document;

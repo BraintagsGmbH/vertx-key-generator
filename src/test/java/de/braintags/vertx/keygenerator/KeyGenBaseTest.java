@@ -10,10 +10,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-package de.braintags.io.vertx.keygenerator;
+package de.braintags.vertx.keygenerator;
 
-import de.braintags.io.vertx.BtVertxTestBase;
-import de.braintags.io.vertx.util.ResultObject;
+import de.braintags.vertx.BtVertxTestBase;
+import de.braintags.vertx.util.ResultObject;
 import io.vertx.core.eventbus.Message;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -67,7 +67,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.BtVertxTestBase#initBeforeTest(io.vertx.ext.unit.TestContext)
+   * @see de.braintags.vertx.BtVertxTestBase#initBeforeTest(io.vertx.ext.unit.TestContext)
    */
   @Override
   public void initTest(TestContext context) {
@@ -91,7 +91,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.BtVertxTestBase#stopTest(io.vertx.ext.unit.TestContext)
+   * @see de.braintags.vertx.BtVertxTestBase#stopTest(io.vertx.ext.unit.TestContext)
    */
   @Override
   protected void stopTest(TestContext context) {

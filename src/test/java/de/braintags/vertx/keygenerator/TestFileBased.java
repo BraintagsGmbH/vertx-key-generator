@@ -10,11 +10,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * #L%
  */
-package de.braintags.io.vertx.keygenerator;
+package de.braintags.vertx.keygenerator;
 
 import org.junit.Test;
 
-import de.braintags.io.vertx.keygenerator.impl.FileKeyGenerator;
+import de.braintags.vertx.keygenerator.impl.FileKeyGenerator;
 import io.vertx.ext.unit.TestContext;
 
 /**
@@ -51,7 +51,7 @@ public class TestFileBased extends KeyGenBaseTest {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.KeyGenBaseTest#initTest(io.vertx.ext.unit.TestContext)
+   * @see de.braintags.vertx.keygenerator.KeyGenBaseTest#initTest(io.vertx.ext.unit.TestContext)
    */
   @Override
   public void initTest(TestContext context) {
@@ -62,8 +62,8 @@ public class TestFileBased extends KeyGenBaseTest {
   /*
    * (non-Javadoc)
    * 
-   * @see de.braintags.io.vertx.keygenerator.KeyGenBaseTest#modifySettings(io.vertx.ext.unit.TestContext,
-   * de.braintags.io.vertx.keygenerator.Settings)
+   * @see de.braintags.vertx.keygenerator.KeyGenBaseTest#modifySettings(io.vertx.ext.unit.TestContext,
+   * de.braintags.vertx.keygenerator.Settings)
    */
   @Override
   protected void modifyKeyGeneratorVerticleSettings(TestContext context, KeyGeneratorSettings settings) {
