@@ -32,7 +32,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
 
   protected long requestNext(TestContext context, String request, long expected) {
     Async async = context.async();
-    ResultObject ro = new ResultObject<>(null);
+    ResultObject<Long> ro = new ResultObject<>(null);
     vertx.eventBus().send(KeyGeneratorVerticle.SERVICE_NAME, request, result -> {
       if (result.failed()) {
         LOGGER.error(result.cause());
@@ -52,7 +52,7 @@ public abstract class KeyGenBaseTest extends BtVertxTestBase {
     if (ro.isError()) {
       createAssertionError(ro.getThrowable());
     }
-    return (long) ro.getResult();
+    return ro.getResult();
   }
 
   protected Long checkReply(TestContext context, Message<Object> reply, long expect) {
