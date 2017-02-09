@@ -6,13 +6,16 @@ dependencies {
   compile group: 'io.vertx', name:'vertx-mongo-service', version:vertxVersion
   compile group: 'de.braintags', name:'vertx-util', version:btVertxVersion
   
-  testCompile group: 'de.braintags', name:'vertx-util', version:btVertxVersion, classifier:'tests'
+  if (isIncludedBuild) {
+    testCompile group: 'de.braintags', name:'vertx-util', version:btVertxVersion, configuration:'commonTests'
+  } else {
+    testCompile group: 'de.braintags', name:'vertx-util', version:btVertxVersion, classifier:'tests'
+  }
   testCompile group: 'io.vertx', name:'vertx-mongo-service', version:vertxVersion, classifier:'tests'
   testCompile group: 'org.slf4j', name:'slf4j-simple', version:'1.7.12'
 }
 
 test {
-  systemProperty 'IDatastoreContainer', 'de.braintags.vertx.jomnigate.mongo.vertxunit.MongoDataStoreContainer'
   systemProperty 'startMongoLocal', 'true'
   systemProperty 'db_name', 'PojongoTestDatabase'
 }
