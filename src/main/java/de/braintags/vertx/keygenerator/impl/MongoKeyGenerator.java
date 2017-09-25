@@ -121,7 +121,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.vertx.keygenerator.IKeyGenerator#init(de.braintags.vertx.keygenerator.Settings)
    */
   @Override
-  public void init(KeyGeneratorSettings settings, Handler<AsyncResult<Void>> handler) throws Exception {
+  public void init(final KeyGeneratorSettings settings, final Handler<AsyncResult<Void>> handler) throws Exception {
     try {
       LOGGER.info("init of MongoKeyGenerator");
       Properties props = settings.getGeneratorProperties();
@@ -151,7 +151,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     }
   }
 
-  private void initCounterCollection(Handler<AsyncResult<Void>> handler) {
+  private void initCounterCollection(final Handler<AsyncResult<Void>> handler) {
     LOGGER.info("Init of sequence collection with " + collectionName);
     mongoClient.count(collectionName, referenceQuery, result -> {
       if (result.failed()) {
@@ -177,7 +177,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     });
   }
 
-  private void initMongoClient(Handler<AsyncResult<Void>> handler) {
+  private void initMongoClient(final Handler<AsyncResult<Void>> handler) {
     try {
       Vertx vertx = getVertx();
       JsonObject config = getConfig();
@@ -208,7 +208,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     return config;
   }
 
-  private boolean startMongoExe(boolean startMongoLocal, int localPort) {
+  private boolean startMongoExe(final boolean startMongoLocal, final int localPort) {
     if (startMongoLocal) {
       LOGGER.info("STARTING MONGO EXE");
       try {
@@ -230,7 +230,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.vertx.keygenerator.IKeyGenerator#generateKey(java.lang.String)
    */
   @Override
-  public void generateKey(Message<?> message) {
+  public void generateKey(final Message<?> message) {
     String key = (String) message.body();
     if (key == null || key.hashCode() == 0) {
       message.fail(-1, "no keyname sent!");
@@ -238,7 +238,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     generateKey(key, message);
   }
 
-  private void generateKey(String key, Message<?> message) {
+  private void generateKey(final String key, final Message<?> message) {
     JsonObject execComnand = createSequenceCommand(key);
     mongoClient.runCommand("findAndModify", execComnand, ur -> {
       if (ur.failed()) {
@@ -254,7 +254,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
     });
   }
 
-  private JsonObject createSequenceCommand(String key) {
+  private JsonObject createSequenceCommand(final String key) {
     JsonObject updateCommand = new JsonObject().put("$inc", new JsonObject().put(key, 1));
     return createFindAndModify(collectionName, updateCommand);
   }
@@ -273,7 +273,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * writeConcern: <document>
    * }
    */
-  private JsonObject createFindAndModify(String collection, JsonObject updateCommand) {
+  private JsonObject createFindAndModify(final String collection, final JsonObject updateCommand) {
     JsonObject retOb = new JsonObject();
     retOb.put("findAndModify", collection);
     retOb.put("query", this.referenceQuery);
@@ -288,7 +288,7 @@ public class MongoKeyGenerator extends AbstractKeyGenerator {
    * @see de.braintags.vertx.keygenerator.IKeyGenerator#shutdown(io.vertx.core.Handler)
    */
   @Override
-  public void shutdown(Handler<AsyncResult<Void>> handler) {
+  public void shutdown(final Handler<AsyncResult<Void>> handler) {
     if (exe != null) {
       exe.stop();
       exe = null;

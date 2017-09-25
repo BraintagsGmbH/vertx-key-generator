@@ -1,10 +1,10 @@
 apply from: 'gradle/vertx/vertxbase.gradle'
 
 dependencies {
-  compile group: 'io.vertx', name:'vertx-mongo-embedded-db', version:vertxVersion
   compile group: 'io.vertx', name:'vertx-mongo-client', version:vertxVersion
   compile group: 'io.vertx', name:'vertx-mongo-service', version:vertxVersion
   compile group: 'de.braintags', name:'vertx-util', version:btVertxVersion
+  compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "2.0.0"
   
   if (isIncludedBuild) {
     testCompile group: 'de.braintags', name:'vertx-util', version:btVertxVersion, configuration:'commonTests'
